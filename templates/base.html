@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+        Retail IQ
+        {% endblock %}
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                R
+            </div>
+
+            <div>
+                <h2>Retail IQ</h2>
+                <span>Business Intelligence</span>
+            </div>
+
+        </div>
+
+
+        <nav class="navigation">
+
+            <a href="{{ url_for('main.dashboard') }}"
+               class="nav-item">
+
+                <span>📊</span>
+                Dashboard
+
+            </a>
+
+
+            <a href="{{ url_for('main.upload') }}"
+               class="nav-item">
+
+                <span>📤</span>
+                Data Upload
+
+            </a>
+
+
+            <a href="{{ url_for('main.eda') }}"
+               class="nav-item">
+
+                <span>📈</span>
+                EDA & Analytics
+
+            </a>
+
+
+            <a href="{{ url_for('main.segmentation') }}"
+               class="nav-item">
+
+                <span>👥</span>
+                Customer Segmentation
+
+            </a>
+
+
+            <a href="{{ url_for('main.forecast') }}"
+               class="nav-item">
+
+                <span>🔮</span>
+                Sales Prediction
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-section">
+
+            <p>REPORTS</p>
+
+
+            <a href="{{ url_for('main.report_csv') }}"
+               class="report-link">
+
+                ↓ CSV
+
+            </a>
+
+
+            <a href="{{ url_for('main.report_excel') }}"
+               class="report-link">
+
+                ↓ Excel
+
+            </a>
+
+
+            <a href="{{ url_for('main.report_pdf') }}"
+               class="report-link">
+
+                ↓ PDF
+
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-footer">
+
+            <div class="status-dot"></div>
+
+            System Online
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+
+                <span class="topbar-label">
+                    RETAIL ANALYTICS
+                </span>
+
+                <h1>
+                    {% block page_title %}
+                    Retail Intelligence
+                    {% endblock %}
+                </h1>
+
+            </div>
+
+
+            <a href="{{ url_for('main.upload') }}"
+               class="top-upload">
+
+                + Upload Data
+
+            </a>
+
+        </header>
+
+
+        <!-- FLASH MESSAGES -->
+
+        <div class="messages">
+
+            {% with messages = get_flashed_messages(
+                with_categories=true
+            ) %}
+
+                {% for category, message in messages %}
+
+                    <div class="alert {{ category }}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endwith %}
+
+        </div>
+
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+</div>
+
+
+</body>
+
+</html>

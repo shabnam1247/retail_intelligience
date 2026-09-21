@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}
+Sales Prediction | Retail IQ
+{% endblock %}
+
+{% block page_title %}
+Sales Prediction
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-description">
+
+    Machine-learning based prediction of
+    upcoming retail sales.
+
+</div>
+
+
+<div class="prediction-banner">
+
+    <div>
+
+        <div class="prediction-icon">
+            🔮
+        </div>
+
+        <div>
+
+            <h2>
+                30-Day Sales Forecast
+            </h2>
+
+            <p>
+                Random Forest regression model
+            </p>
+
+        </div>
+
+    </div>
+
+    <span class="model-badge">
+        Machine Learning
+    </span>
+
+</div>
+
+
+{% if predictions %}
+
+
+<div class="chart-card full">
+
+    <div class="card-heading">
+
+        <div>
+
+            <h3>
+                Predicted Revenue
+            </h3>
+
+            <p>
+                Expected sales for the next 30 days
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="chart-container tall">
+
+        <canvas id="forecastChart"></canvas>
+
+    </div>
+
+</div>
+
+
+<div class="table-card">
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <th>Predicted Sales</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in predictions %}
+
+                <tr>
+
+                    <td>
+                        {{ item.date }}
+                    </td>
+
+                    <td class="money">
+
+                        ₹{{ "{:,.2f}".format(item.prediction or 0) }}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const predictions =
+    {{ predictions | tojson }};
+
+
+new Chart(
+    document.getElementById(
+        "forecastChart"
+    ),
+    {
+
+        type: "line",
+
+        data: {
+
+            labels:
+                predictions.map(
+                    x => x.date
+                ),
+
+            datasets: [
+
+                {
+
+                    label:
+                        "Predicted Sales",
+
+                    data:
+                        predictions.map(
+                            x => x.prediction
+                        ),
+
+                    borderWidth: 3,
+
+                    tension: 0.4,
+
+                    fill: true
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false
+
+        }
+
+    }
+);
+
+</script>
+
+
+{% else %}
+
+
+<div class="empty-state">
+
+    <div class="empty-icon">
+        📉
+    </div>
+
+    <h2>
+        Not Enough Data
+    </h2>
+
+    <p>
+        Sales prediction requires at least
+        30 days of historical sales data.
+    </p>
+
+    <a href="{{ url_for('main.upload') }}"
+       class="primary-button">
+
+        Upload More Data
+
+    </a>
+
+</div>
+
+
+{% endif %}
+
+{% endblock %}

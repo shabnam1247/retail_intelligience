@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+
+{% block title %}
+EDA & Analytics | Retail IQ
+{% endblock %}
+
+{% block page_title %}
+EDA & Analytics
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-description">
+
+    Explore patterns, trends and relationships
+    in your retail sales data.
+
+</div>
+
+
+<!-- EDA SUMMARY -->
+
+<div class="analytics-grid">
+
+    <div class="mini-card">
+
+        <span>Revenue Months</span>
+
+        <strong>
+            {{ monthly|length }}
+        </strong>
+
+    </div>
+
+
+    <div class="mini-card">
+
+        <span>Payment Methods</span>
+
+        <strong>
+            {{ payment|length }}
+        </strong>
+
+    </div>
+
+
+    <div class="mini-card">
+
+        <span>Sales Channels</span>
+
+        <strong>
+            {{ channel|length }}
+        </strong>
+
+    </div>
+
+
+    <div class="mini-card">
+
+        <span>Products Analyzed</span>
+
+        <strong>
+            {{ products|length }}
+        </strong>
+
+    </div>
+
+</div>
+
+
+<!-- MONTHLY -->
+
+<div class="chart-card full">
+
+    <div class="card-heading">
+
+        <div>
+
+            <h3>
+                Monthly Revenue Analysis
+            </h3>
+
+            <p>
+                Revenue trend over time
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="chart-container tall">
+
+        <canvas id="monthlyChart"></canvas>
+
+    </div>
+
+</div>
+
+
+<!-- TWO CHARTS -->
+
+<div class="chart-grid">
+
+
+    <div class="chart-card">
+
+        <div class="card-heading">
+
+            <div>
+
+                <h3>
+                    Payment Method Analysis
+                </h3>
+
+                <p>
+                    Revenue by payment method
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="chart-container">
+
+            <canvas id="paymentChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <div class="chart-card">
+
+        <div class="card-heading">
+
+            <div>
+
+                <h3>
+                    Sales Channel Analysis
+                </h3>
+
+                <p>
+                    Revenue by sales channel
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="chart-container">
+
+            <canvas id="channelChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TABLE -->
+
+<div class="chart-card full">
+
+    <div class="card-heading">
+
+        <div>
+
+            <h3>
+                Monthly Revenue Details
+            </h3>
+
+            <p>
+                Detailed revenue breakdown
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Month</th>
+
+                    <th>Revenue</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in monthly %}
+
+                <tr>
+
+                    <td>
+                        {{ item.month }}
+                    </td>
+
+                    <td class="money">
+
+                        ₹{{ "{:,.2f}".format(item.sales or 0) }}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const monthly = {{ monthly | tojson }};
+
+const payment = {{ payment | tojson }};
+
+const channel = {{ channel | tojson }};
+
+
+// Monthly Revenue
+
+new Chart(
+    document.getElementById(
+        "monthlyChart"
+    ),
+    {
+
+        type: "line",
+
+        data: {
+
+            labels:
+                monthly.map(
+                    x => x.month
+                ),
+
+            datasets: [
+
+                {
+
+                    label: "Revenue",
+
+                    data:
+                        monthly.map(
+                            x => x.sales
+                        ),
+
+                    borderWidth: 3,
+
+                    tension: 0.4,
+
+                    fill: true
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false
+
+        }
+
+    }
+);
+
+
+// Payment
+
+new Chart(
+    document.getElementById(
+        "paymentChart"
+    ),
+    {
+
+        type: "doughnut",
+
+        data: {
+
+            labels:
+                payment.map(
+                    x => x.payment_method
+                ),
+
+            datasets: [
+
+                {
+
+                    data:
+                        payment.map(
+                            x => x.sales
+                        ),
+
+                    borderWidth: 0
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    position: "bottom"
+                }
+
+            }
+
+        }
+
+    }
+);
+
+
+// Channel
+
+new Chart(
+    document.getElementById(
+        "channelChart"
+    ),
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels:
+                channel.map(
+                    x => x.channel
+                ),
+
+            datasets: [
+
+                {
+
+                    label: "Revenue",
+
+                    data:
+                        channel.map(
+                            x => x.sales
+                        ),
+
+                    borderWidth: 0
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | Retail IQ
+{% endblock %}
+
+{% block page_title %}
+Executive Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-description">
+
+    Monitor sales performance, customers,
+    revenue and business growth.
+
+</div>
+
+
+<!-- KPI CARDS -->
+
+<div class="kpi-grid">
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon revenue">
+            ₹
+        </div>
+
+        <div>
+
+            <span>Total Revenue</span>
+
+            <h2>
+                ₹{{ "{:,.2f}".format(kpis.revenue or 0) }}
+            </h2>
+
+            <small>Overall sales revenue</small>
+
+        </div>
+
+    </div>
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon orders">
+            #
+        </div>
+
+        <div>
+
+            <span>Total Orders</span>
+
+            <h2>
+                {{ "{:,}".format(kpis.orders or 0) }}
+            </h2>
+
+            <small>Completed orders</small>
+
+        </div>
+
+    </div>
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon customers">
+            👥
+        </div>
+
+        <div>
+
+            <span>Customers</span>
+
+            <h2>
+                {{ "{:,}".format(kpis.customers or 0) }}
+            </h2>
+
+            <small>Unique customers</small>
+
+        </div>
+
+    </div>
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon units">
+            📦
+        </div>
+
+        <div>
+
+            <span>Units Sold</span>
+
+            <h2>
+                {{ "{:,}".format(kpis.units or 0) }}
+            </h2>
+
+            <small>Total products sold</small>
+
+        </div>
+
+    </div>
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon aov">
+            ₹
+        </div>
+
+        <div>
+
+            <span>Average Order</span>
+
+            <h2>
+                ₹{{ "{:,.2f}".format(kpis.aov or 0) }}
+            </h2>
+
+            <small>Average order value</small>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CHARTS -->
+
+<div class="chart-grid">
+
+    <div class="chart-card large">
+
+        <div class="card-heading">
+
+            <div>
+
+                <h3>Revenue Trend</h3>
+
+                <p>
+                    Monthly revenue performance
+                </p>
+
+            </div>
+
+            <span class="badge">
+                Monthly
+            </span>
+
+        </div>
+
+        <div class="chart-container">
+
+            <canvas id="revenueChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <div class="chart-card">
+
+        <div class="card-heading">
+
+            <div>
+
+                <h3>Top Products</h3>
+
+                <p>
+                    Revenue contribution
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="chart-container">
+
+            <canvas id="productChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- QUICK ACTIONS -->
+
+<div class="section-title">
+
+    <h2>Business Intelligence</h2>
+
+    <p>
+        Explore deeper insights from your retail data.
+    </p>
+
+</div>
+
+
+<div class="feature-grid">
+
+    <a href="{{ url_for('main.eda') }}"
+       class="feature-card">
+
+        <div class="feature-icon">
+            📊
+        </div>
+
+        <h3>EDA & Analytics</h3>
+
+        <p>
+            Analyze revenue, payment methods,
+            channels and product performance.
+        </p>
+
+        <span>
+            Explore Analytics →
+        </span>
+
+    </a>
+
+
+    <a href="{{ url_for('main.segmentation') }}"
+       class="feature-card">
+
+        <div class="feature-icon">
+            👥
+        </div>
+
+        <h3>Customer Segmentation</h3>
+
+        <p>
+            Discover high-value, loyal,
+            potential and at-risk customers.
+        </p>
+
+        <span>
+            View Segments →
+        </span>
+
+    </a>
+
+
+    <a href="{{ url_for('main.forecast') }}"
+       class="feature-card">
+
+        <div class="feature-icon">
+            🔮
+        </div>
+
+        <h3>Sales Prediction</h3>
+
+        <p>
+            Predict upcoming sales using
+            machine learning.
+        </p>
+
+        <span>
+            View Forecast →
+        </span>
+
+    </a>
+
+
+    <a href="{{ url_for('main.upload') }}"
+       class="feature-card">
+
+        <div class="feature-icon">
+            📤
+        </div>
+
+        <h3>Upload Data</h3>
+
+        <p>
+            Upload your latest retail CSV
+            and automatically clean the data.
+        </p>
+
+        <span>
+            Upload Dataset →
+        </span>
+
+    </a>
+
+</div>
+
+
+<script>
+
+const monthlyData = {{ monthly | tojson }};
+
+const productData = {{ products | tojson }};
+
+
+// Revenue chart
+
+new Chart(
+    document.getElementById("revenueChart"),
+    {
+
+        type: "line",
+
+        data: {
+
+            labels:
+                monthlyData.map(
+                    item => item.month
+                ),
+
+            datasets: [
+
+                {
+                    label: "Revenue",
+
+                    data:
+                        monthlyData.map(
+                            item => item.sales
+                        ),
+
+                    borderWidth: 3,
+
+                    tension: 0.4,
+
+                    fill: true
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+
+            }
+
+        }
+
+    }
+);
+
+
+// Product chart
+
+new Chart(
+    document.getElementById("productChart"),
+    {
+
+        type: "doughnut",
+
+        data: {
+
+            labels:
+                productData.map(
+                    item => item.product
+                ),
+
+            datasets: [
+
+                {
+                    data:
+                        productData.map(
+                            item => item.sales
+                        ),
+
+                    borderWidth: 0
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    position: "bottom"
+
+                }
+
+            }
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

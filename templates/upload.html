@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}
+Data Upload | Retail IQ
+{% endblock %}
+
+{% block page_title %}
+Data Management
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-description">
+
+    Upload your retail sales CSV.
+    The system automatically cleans and validates your data.
+
+</div>
+
+
+<div class="upload-layout">
+
+
+    <div class="upload-card">
+
+        <div class="upload-icon">
+            📤
+        </div>
+
+        <h2>
+            Upload Sales Dataset
+        </h2>
+
+        <p>
+            Select a CSV file containing your
+            retail transaction data.
+        </p>
+
+
+        <form
+            action="{{ url_for('main.upload') }}"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <label class="file-box">
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".csv"
+                    required
+                >
+
+                <div>
+
+                    <strong>
+                        Choose CSV File
+                    </strong>
+
+                    <span>
+                        CSV files only
+                    </span>
+
+                </div>
+
+            </label>
+
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+
+                Upload & Analyze
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="requirements-card">
+
+        <h3>
+            Required Columns
+        </h3>
+
+        <p>
+            Your CSV should contain:
+        </p>
+
+        <div class="column-list">
+
+            <span>order_id</span>
+            <span>order_date</span>
+            <span>customer_id</span>
+            <span>product_id</span>
+            <span>quantity</span>
+            <span>unit_price</span>
+            <span>discount_pct</span>
+            <span>sales_amount</span>
+            <span>payment_method</span>
+            <span>channel</span>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <strong>
+                Automatic Cleaning
+            </strong>
+
+            <p>
+                Missing values, duplicate orders,
+                invalid dates and incorrect numeric
+                values are handled automatically.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

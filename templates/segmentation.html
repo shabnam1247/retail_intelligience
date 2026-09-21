@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}
+Customer Segmentation | Retail IQ
+{% endblock %}
+
+{% block page_title %}
+Customer Segmentation
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-description">
+
+    RFM analysis and K-Means clustering
+    to understand customer behavior.
+
+</div>
+
+
+<div class="segment-header">
+
+    <div>
+
+        <h2>
+            Customer Segments
+        </h2>
+
+        <p>
+            Recency • Frequency • Monetary Value
+        </p>
+
+    </div>
+
+    <div class="model-badge">
+        K-Means ML
+    </div>
+
+</div>
+
+
+<div class="table-card">
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Customer ID</th>
+
+                    <th>Recency</th>
+
+                    <th>Frequency</th>
+
+                    <th>Monetary</th>
+
+                    <th>Segment</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for customer in segments %}
+
+                <tr>
+
+                    <td>
+                        #{{ customer.customer_id }}
+                    </td>
+
+                    <td>
+                        {{ customer.Recency }} days
+                    </td>
+
+                    <td>
+                        {{ customer.Frequency }}
+                    </td>
+
+                    <td class="money">
+
+                        ₹{{ "{:,.2f}".format(customer.Monetary or 0) }}
+
+                    </td>
+
+                    <td>
+
+                        {% if customer.Segment == "High Value" %}
+
+                            <span class="segment high">
+                                High Value
+                            </span>
+
+                        {% elif customer.Segment == "Loyal" %}
+
+                            <span class="segment loyal">
+                                Loyal
+                            </span>
+
+                        {% elif customer.Segment == "Potential" %}
+
+                            <span class="segment potential">
+                                Potential
+                            </span>
+
+                        {% else %}
+
+                            <span class="segment risk">
+                                At Risk
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

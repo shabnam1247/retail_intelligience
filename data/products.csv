@@ -1,0 +1,31 @@
+product_id,product_name,category,unit_price
+1,Wireless Earbuds,Audio,499
+2,Bluetooth Speaker,Audio,4999
+3,Smart Watch,Wearables,3999
+4,USB-C Cable,Accessories,1999
+5,Power Bank,Accessories,1999
+6,Laptop Stand,Accessories,9999
+7,Mechanical Keyboard,Computers,499
+8,Wireless Mouse,Computers,3999
+9,Webcam,Computers,799
+10,Phone Case,Accessories,499
+11,Fast Charger,Accessories,2499
+12,HDMI Cable,Accessories,14999
+13,Monitor 24in,Displays,4999
+14,Monitor 27in,Displays,4999
+15,Laptop 14in,Computers,4999
+16,Laptop 15in,Computers,6999
+17,Tablet 10in,Mobile,2499
+18,Smartphone A,Mobile,499
+19,Smartphone B,Mobile,6999
+20,Smartphone C,Mobile,1999
+21,Gaming Headset,Gaming,2499
+22,Desk Lamp,Home,1499
+23,External SSD,Storage,799
+24,MicroSD Card,Storage,9999
+25,Router,Networking,4999
+26,Power Strip,Home,3999
+27,Air Purifier,Home,1499
+28,Smart Bulb,Home,6999
+29,Fitness Band,Wearables,2499
+30,Portable SSD,Storage,1999
